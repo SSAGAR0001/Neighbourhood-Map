@@ -2,7 +2,6 @@
 + Its a single page application featuring a neighborhood map with many options.
 
 ## Technical Specification
-+ Bootstrap v4.0 (alpha)
 + KnockoutJS 3
 + Google Maps API
 + FLickr API

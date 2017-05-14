@@ -2,6 +2,11 @@ var map;
 var largeInfowindow;
 // Create a new blank array for all the listing markers.
 var markers = [];
+
+ var highlightedIcon;
+ var defaultIcon;
+
+
 var locations = [{
         title: 'Jakhoo Temple',
         location: {
@@ -142,10 +147,10 @@ function initMap() {
 
     largeInfowindow = new google.maps.InfoWindow();
     // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('E74C3C');
+    defaultIcon = makeMarkerIcon('E74C3C');
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('EC7063');
+    highlightedIcon = makeMarkerIcon('EC7063');
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -157,23 +162,18 @@ function initMap() {
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon,
-            id: i
+            id: i,
+            map:map
         });
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click', function(){
-            populateInfoWindow(this, largeInfowindow);
-        });
+        marker.addListener('click',populateInfoWindowBefore);
 
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
-        marker.addListener('mouseover', function(){
-            this.setIcon(highlightedIcon);
-        });
-        marker.addListener('mouseout', function(){
-            this.setIcon(defaultIcon);
-        });
+        marker.addListener('mouseover', setTheIcon);
+        marker.addListener('mouseout', defaultTheIcon);
     }
     document.getElementById('show-listings').addEventListener('click', showListings);
     document.getElementById('hide-listings').addEventListener('click', hideListings);
@@ -182,6 +182,21 @@ function initMap() {
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
+
+function setTheIcon()
+{
+    this.setIcon(highlightedIcon);
+}
+
+function defaultTheIcon()
+{
+    this.setIcon(defaultIcon);
+}
+
+
+function populateInfoWindowBefore() {
+    populateInfoWindow( this , largeInfowindow );    
+}
 
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
@@ -225,14 +240,18 @@ function hideListings() {
 function highlight_marker(data) {
     for (var i = 0; i < markers.length; i++) {
         if (markers[i].title == data) {
-            markers[i].setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function() {
-                markers[i].setAnimation(null);
-            }, 700);
+            makeItBounce( markers[ i ] );
             populateInfoWindow(markers[i], largeInfowindow);
             break;
         }
     }
+}
+
+function makeItBounce( marker ) {
+    marker.setAnimation( google.maps.Animation.BOUNCE );
+    setTimeout( function(){
+        marker.setAnimation(null);
+    },700);
 }
 
 function makeMarkerIcon(markerColor) {

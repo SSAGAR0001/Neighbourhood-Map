@@ -142,10 +142,10 @@ function initMap() {
 
     largeInfowindow = new google.maps.InfoWindow();
     // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('0091ff');
+    var defaultIcon = makeMarkerIcon('E74C3C');
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+    var highlightedIcon = makeMarkerIcon('EC7063');
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -157,22 +157,21 @@ function initMap() {
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon,
-            id: i,
-            map: map
+            id: i
         });
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click', function() {
+        marker.addListener('click', function(){
             populateInfoWindow(this, largeInfowindow);
         });
 
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
-        marker.addListener('mouseover', function() {
+        marker.addListener('mouseover', function(){
             this.setIcon(highlightedIcon);
         });
-        marker.addListener('mouseout', function() {
+        marker.addListener('mouseout', function(){
             this.setIcon(defaultIcon);
         });
     }
@@ -183,6 +182,7 @@ function initMap() {
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
+
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
@@ -201,6 +201,7 @@ function populateInfoWindow(marker, infowindow) {
     }
 }
 // This function will loop through the markers array and display them all.
+
 function showListings() {
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
@@ -211,6 +212,7 @@ function showListings() {
     map.fitBounds(bounds);
 }
 // This function will loop through the listings and hide them all.
+
 function hideListings() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
@@ -219,6 +221,7 @@ function hideListings() {
 // This function takes in a COLOR, and then creates a new marker
 // icon of that color. The icon will be 21 px wide by 34 high, have an origin
 // of 0, 0 and be anchored at 10, 34).
+
 function highlight_marker(data) {
     for (var i = 0; i < markers.length; i++) {
         if (markers[i].title == data) {

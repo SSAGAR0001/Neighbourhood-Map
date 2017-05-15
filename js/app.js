@@ -206,6 +206,7 @@ function populateInfoWindowBefore() {
 }
 
 function populateInfoWindow(marker, infowindow) {
+    makeItBounce(marker);
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
         // Clear the infowindow content to give the streetview time to load.
@@ -258,7 +259,7 @@ function makeItBounce( marker ) {
     marker.setAnimation( google.maps.Animation.BOUNCE );
     setTimeout( function(){
         marker.setAnimation(null);
-    },700);
+    },1700);
 }
 
 function makeMarkerIcon(markerColor) {

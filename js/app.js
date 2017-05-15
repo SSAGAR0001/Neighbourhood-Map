@@ -259,7 +259,7 @@ function makeItBounce( marker ) {
     marker.setAnimation( google.maps.Animation.BOUNCE );
     setTimeout( function(){
         marker.setAnimation(null);
-    },1700);
+    },5000);
 }
 
 function makeMarkerIcon(markerColor) {

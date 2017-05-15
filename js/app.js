@@ -6,6 +6,10 @@ var markers = [];
  var highlightedIcon;
  var defaultIcon;
 
+function errorThere () {
+    view_model.isErrorThere( true );
+    view_model.errorMessage("Can't Load The Map");
+}
 
 var locations = [{
         title: 'Jakhoo Temple',
@@ -151,6 +155,7 @@ function initMap() {
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
     highlightedIcon = makeMarkerIcon('EC7063');
+    ThirdOne = makeMarkerIcon('E59866');
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -168,21 +173,23 @@ function initMap() {
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
-        marker.addListener('click',populateInfoWindowBefore);
+        marker.addListener('click',populateInfoWindowBefore, makeItBounce);
 
         // Two event listeners - one for mouseover, one for mouseout,
         // to change the colors back and forth.
         marker.addListener('mouseover', setTheIcon);
         marker.addListener('mouseout', defaultTheIcon);
     }
-    document.getElementById('show-listings').addEventListener('click', showListings);
-    document.getElementById('hide-listings').addEventListener('click', hideListings);
+    //document.getElementById('show-listings').addEventListener('click', showListings);
+    //document.getElementById('hide-listings').addEventListener('click', hideListings);
     view_model.init();
 }
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-
+function ThirdIcon() {
+    this.setIcon(ThirdOne);
+}
 function setTheIcon()
 {
     this.setIcon(highlightedIcon);
@@ -205,7 +212,7 @@ function populateInfoWindow(marker, infowindow) {
 
         infowindow.marker = marker;
         var data = get_flickr(marker);
-        console.log(data);
+        //console.log(data);
         infowindow.setContent(data);
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener('closeclick', function() {
@@ -266,13 +273,15 @@ function makeMarkerIcon(markerColor) {
 }
 
 function get_flickr(marker) {
-    var flickrUrl = ' https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=e98f2c0ac159245584671338a9857397&format=json&nojsoncallback=1';
-    var images = 'sss';
+    var lat = marker.position.lat();
+    var lng = marker.position.lng();
+    var flickrUrl = ' https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=e98f2c0ac159245584671338a9857397&lat='+lat+'&lon='+lng+'&radius=0.5&format=json&nojsoncallback=1';
+    var images = '';
     $.ajax({
         url: flickrUrl,
         data: 'lat=' + marker.position.lat() + '&lon=' + marker.position.lng(),
     }).done(function(response) {
-        console.log(response);
+        //console.log(response);
         var myPhotos = response.photos.photo;
         images = '<h2>Nearby Images</h2>';
         for (var i = 0; i < 5; i++) {
@@ -281,7 +290,8 @@ function get_flickr(marker) {
 
         largeInfowindow.setContent(images);
     }).fail(function(response, status, error) {
-        console.log("Can't Load Images");
+        images += "Canit load images some error there";
+        largeInfowindow.setContent(images);
     });
 
 }
@@ -303,6 +313,9 @@ var view_model = {
     listing: ko.observableArray([]),
     // Live search inspired by "http://opensoul.org/2011/06/23/live-search-with-knockoutjs/"
 
+
+    isErrorThere : ko.observable( false ),
+    errorMessage : ko.observable(''),
 
     query: ko.observable(''),
 

@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha-6/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-
 <body>
-    <div class="container">
-        <div class="options-box">
+        <div class="row" style="height:100%;">
+        <div class="options-box col-md-4">
             <h1>Religious Places In Shimla</h1>
             <div>
                 <input id="show-listings" type="button" value="Show Listings" data-bind="click: showListings">
@@ -21,24 +19,18 @@
             </div>
             <input type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off"><br>
             <div>
-        	<ul data-bind="foreach: listing">
-        		<li data-bind="text: $data , click : highlight_marker"></li>
+        	<ul class="list-group" data-bind="foreach: listing">
+        		<li class="list-group-item" data-bind="text: $data , click : highlight_marker"></li>
         	</ul>
         </div>
         </div>
-
-
-
-        <div id="map"></div>
-    </div>
+            <div id="map" class="col-md-8"></div>
+        </div>
     <footer>
         <script src="js/lib/knockout-3.4.2.js"></script>
         <script src="js/app.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB01aNXL8UFNAlLoRJrRLxp_snfqZubmdU&libraries=geometry&v=3&callback=initMap" onerror = "errorThere()">
     </script>
-
-    </footer>
-    
+    </footer> 
 </body>
-
 </html>

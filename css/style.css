@@ -6,11 +6,6 @@ html,
             padding: 0;
         }
 
-        .container {
-            height: 100%;
-            position: relative;
-        }
-
         input {
             font-size: 12px;
         }
@@ -33,7 +28,7 @@ html,
             margin: 20px 0 20px 0;
             border: none;
         }
-
+/*
         #map {
             bottom: 0px;
             height: 100%;
@@ -41,7 +36,7 @@ html,
             position: absolute;
             right: 0px;
         }
-
+*/
         .options-box {
             background: #fff;
             border: 1px solid #999;
@@ -53,11 +48,21 @@ html,
             width: 340px;
         }
 
-        #pano {
-            width: 200px;
-            height: 200px;
-        }
-
         .text {
             font-size: 12px;
         }
+
+        @media only screen and (max-width: 750px) {
+         
+            .options-box {
+                width: 100%;
+                transition: transform 0.3s ease;
+                margin-right: 10px;
+                margin-left: 10px;
+            }
+            #map {
+                /*left: 0px;*/ 
+                width: 100%; 
+                height: 850px;
+            }
+    }
